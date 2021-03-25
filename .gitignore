@@ -5,5 +5,6 @@
 !.gitkeep
 !*.sv
 !*.txt
+!*.jpg
 !*
-*/sim/*
+*/sim/
