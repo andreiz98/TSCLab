@@ -1,0 +1,6 @@
+../../lab6/lab_dut/instr_register_pkg.sv   	                +incdir+../../lab_dut
+../../lab6/lab_dut/instr_register.sv   	                +incdir+../../lab_dut
+
+../lab06_clocking_blocks/tb_ifc.sv
+../lab06_clocking_blocks/instr_register_test.sv
+../lab06_clocking_blocks/top.sv                    +incdir+../lab06_clocking_blocks
