@@ -81,10 +81,47 @@ class Driver;
 		virtual tb_ifc vifc;
 		transaction tr;
 		
+	covergroup inputs_measure;
+	
+		cov_0: coverpoint vifc.cb.opcode {
+			bins val_ZERO = {ZERO};
+			bins val_PASSA = {PASSA};
+			bins val_PASSB = {PASSB};
+			bins val_ADD = {ADD};
+			bins val_SUB = {SUB};
+			bins val_MULT = {MULT};
+			bins val_DIV = {DIV};
+			bins val_MOD = {MOD};
+		}	
+		
+		cov_1: coverpoint vifc.cb.operand_a {
+			bins val_operand_a[] = {[-15:15]};
+		}
+	
+		cov_2: coverpoint vifc.cb.operand_b {
+			bins val_operand_b[] = {[0:15]};
+		}
+		
+		cov_3: coverpoint vifc.cb.operand_a {
+			bins val_operand_a_neg = {[-15:-1]};
+			bins val_operand_a_poz = {[0:15]}; 
+		}
+		
+		cov_4: cross cov_0, cov_3 {
+			ignore_bins val_poz = binsof(cov_3.val_operand_a_poz);
+		}
+		
+		ov_5: cross cov_0, cov_3 {
+			ignore_bins val_neg = binsof(cov_3.val_operand_a_neg);
+		}
+		
+	endgroup
+	
 		function new(virtual tb_ifc vifc);
 			this.vifc = vifc;
 			tr = new();
 			tr_ext = new();
+			inputs_measure = new;
 		endfunction
 		
 	task generate_transaction;
@@ -100,18 +137,20 @@ class Driver;
 		 
 		@( vifc.cb) vifc.cb.load_en <= 1'b1;  // enable writing to register
 		
-		 repeat (3) begin
+		 repeat (5) begin
 		 @(vifc.cb) tr.randomize();
 		 assign_signal();
+		 inputs_measure.sample;
 		 @(vifc.cb) tr.print_transaction;
 
 		 end
 		 
 		 tr = tr_ext;
 		 
-		 repeat (3) begin
+		 repeat (5) begin
 		 @(vifc.cb) tr.randomize();
 		 assign_signal();
+		 inputs_measure.sample;
 		 @(vifc.cb) tr.print_transaction;
 
 		 end
