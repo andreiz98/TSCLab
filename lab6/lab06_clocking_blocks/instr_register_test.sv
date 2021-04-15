@@ -111,8 +111,20 @@ class Driver;
 			ignore_bins val_poz = binsof(cov_3.val_operand_a_poz);
 		}
 		
-		ov_5: cross cov_0, cov_3 {
+		cov_5: cross cov_0, cov_3 {
 			ignore_bins val_neg = binsof(cov_3.val_operand_a_neg);
+		}
+		
+		cov_6: cross cov_0, cov_1, cov_2 {
+			ignore_bins val_op_a_sau_op_b = binsof(cov_1) intersect {0} || binsof(cov_2) intersect {0};
+		}
+		
+		cov_7: cross cov_0, cov_1, cov_2 {
+			ignore_bins val_op_a_si_op_b = binsof(cov_1) intersect {15} && binsof(cov_2) intersect {15};
+		}
+		
+		cov_8: cross cov_0, cov_1, cov_2 {
+			ignore_bins val_op_a_sau_op_b = binsof(cov_1) intersect {-15} && binsof(cov_2) intersect {0};
 		}
 		
 	endgroup
